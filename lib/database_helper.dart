@@ -27,7 +27,7 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     await db.execute('''
       create table if not exists todos(
-        id interger primary key autoincrement,
+        id integer primary key autoincrement,
         nama text not null,
         deskripsi text not null,
         done interger not null default 0  

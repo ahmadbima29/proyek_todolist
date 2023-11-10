@@ -61,6 +61,14 @@ class _TodoList extends State<TodoList> {
     refreshList();
   }
 
+  void updateItem2(int index, bool done) async {
+    todoList[index].done = done;
+    todoList[index].nama = _namaCtrl.text;
+    todoList[index].deskripsi = _deskripsiCtrl.text;
+    await dbHelper.updateTodo(todoList[index]);
+    refreshList();
+  }
+
   void deleteItem(int id) async {
     //todolist.removeAt(index);
     await dbHelper.deleteTodo(id);
@@ -81,7 +89,7 @@ class _TodoList extends State<TodoList> {
     });
   }
 
-  void tampilForm() {
+  void tampilForm(void fungsi) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -95,7 +103,7 @@ class _TodoList extends State<TodoList> {
                     child: Text("Tutup")),
                 ElevatedButton(
                     onPressed: () {
-                      addItem();
+                      fungsi;
                       Navigator.pop(context);
                     },
                     child: Text('Tambah'))
@@ -129,7 +137,7 @@ class _TodoList extends State<TodoList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          tampilForm();
+          tampilForm(addItem());
         },
         child: const Icon(Icons.add_box),
       ),
@@ -153,6 +161,9 @@ class _TodoList extends State<TodoList> {
                   itemCount: todoList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: () {
+                        tampilForm(updateItem2(index, false));
+                      },
                       leading: todoList[index].done
                           ? IconButton(
                               icon: const Icon(Icons.check_circle),
